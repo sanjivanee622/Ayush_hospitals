@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1071004870603",
+    "firebase_url": "https://ayush-hospitals-e0a65-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ayush-hospitals-e0a65",
+    "storage_bucket": "ayush-hospitals-e0a65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071004870603:android:03e1472cb3b7b02f26b84e",
+        "android_client_info": {
+          "package_name": "com.example.ayush_hospitals"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiax1i5DfEWHi9t4SuL7fyZb3mYVSMDQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
