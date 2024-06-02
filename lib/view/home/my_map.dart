@@ -17,63 +17,35 @@ class MyMap extends StatefulWidget {
 }
 
 class _MyMapState extends State<MyMap> {
-  // ChromeSafariBrowser instance for displaying web pages in Chrome or Safari browser
   final ChromeSafariBrowser browser = ChromeSafariBrowser();
-
-  // Completer for GoogleMapController
   Completer<GoogleMapController> _controller = Completer();
-  
-  // GoogleMapController instance
   late GoogleMapController googleMapController;
-  
-  // LocationData instance for storing current location data
   LocationData? _locationData;
-  
-  // List to store coordinates for drawing polylines on the map
   List<LatLng> polylineCoordinates = [];
-  
-  // Boolean flag for controlling direction buttons visibility
   bool dirController = false;
-  
-  // Set of markers to be displayed on the map
   Set<Marker> markers = {};
-  
-  // LatLng instance for holding the destination marker position
   LatLng? dirControllerLatLng;
-  
-  // Boolean flag for checking if direction button is pressed
   bool dirIsPressed = false;
-  
-  // BitmapDescriptor for source and destination markers
   BitmapDescriptor sourceMarker = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationMarker = BitmapDescriptor.defaultMarker;
-  
-  // Set of circles to be displayed on the map
   Set<Circle> circles = {};
 
   @override
   void initState() {
-    // Initialize web view
     webViewInit();
-    
-    // Set custom markers
     setCustomMarkes();
-    
-    // Get current location
     currLocation();
     super.initState();
   }
 
   @override
   void setState(fn) {
-    // Check if the widget is mounted before calling setState
     if (mounted) {
       super.setState(fn);
     }
   }
 
   void getPolyPoints(LatLng source, LatLng destination) {
-    // Fetch route coordinates between source and destination
     tomtom_api.getRouteBetweenCoordinates(source, destination).then((value) {
       polylineCoordinates = value;
       setState(() {});
@@ -81,19 +53,18 @@ class _MyMapState extends State<MyMap> {
   }
 
   void webViewInit() async {
-    // Enable web contents debugging for Android
     if (Platform.isAndroid) {
       await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(false);
     }
-    // Get Safe Browsing privacy policy URL
     AndroidInAppWebViewController.getSafeBrowsingPrivacyPolicyUrl();
   }
 
-  // Function to get the current location and listen for location changes
+// To get the current Location and listen location changes
   void currLocation() async {
     Location location = Location();
 
-    // Collecting Location Data
+// Collecting Location Data
+
     _locationData = await location.getLocation();
 
     _controller.future.then((value) {
@@ -133,7 +104,6 @@ class _MyMapState extends State<MyMap> {
     setState(() {});
   }
 
-  // Function to add circles on the map
   void addCircles(double latitude, double longitude) {
     double radius1Km = 25000; // 25 kilometers in meters
     double radius2Km = 50000; // 50 kilometers in meters
@@ -165,7 +135,6 @@ class _MyMapState extends State<MyMap> {
     ]);
   }
 
-  // Function to set custom markers
   void setCustomMarkes() async {
     await BitmapDescriptor.fromAssetImage(
             ImageConfiguration.empty, "lib/assets/images/hospital2.png")
@@ -187,13 +156,15 @@ class _MyMapState extends State<MyMap> {
         title: const Text(
           "Holistic Heal",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            // fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.bold, // Make the text bold
           ),
         ),
         elevation: 1,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         titleTextStyle: const TextStyle(color: Colors.green, fontSize: 26),
-        centerTitle: true,
+        centerTitle: true, // Align title text along the center
+        // toolbarHeight: 95, // Increase the height of the AppBar
       ),
       body: Stack(
         children: [
@@ -280,15 +251,14 @@ class _MyMapState extends State<MyMap> {
     );
   }
 
+// Current Camera Postion
   CameraPosition _currCameraPosition() {
-    // Return the current camera position
     return CameraPosition(
         target: LatLng(_locationData!.latitude!, _locationData!.longitude!),
         zoom: 14);
   }
 
   void getMarker(List<String> stringList) async {
-    // Fetch sorted marker data
     List<List<dynamic>> sortedData = await SortedMarkers.getSortedMarkers(
         stringList[0], stringList[1], stringList[2]);
 
@@ -308,7 +278,6 @@ class _MyMapState extends State<MyMap> {
   }
 
   Set<Marker> markersSet(List<List<dynamic>> sortedData) {
-    // Create a set of markers from sorted marker data
     Set<Marker> res = {};
     for (List<dynamic> sorted in sortedData) {
       LatLng sortedLatLng = sorted[0];

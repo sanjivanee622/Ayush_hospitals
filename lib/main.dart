@@ -1,56 +1,45 @@
-import 'package:ayush_hospitals/Routes/routes.dart';
-import 'package:ayush_hospitals/pages/drawer.dart';
-import 'package:ayush_hospitals/widgets/gridItems.dart';
-import 'package:ayush_hospitals/widgets/topInfo.dart';
+// import 'package:ayush_hospitals/view/home/my_map.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:ayush_hospitals/view/login/signin_screen.dart';
+// import 'package:ayush_hospitals/view/home/ProfileScreen.dart';
+import 'package:ayush_hospitals/view/splash/splash_screen.dart';
+import 'package:ayush_hospitals/widgets/CustomizedBottomNavigationbar.dart';
+import 'package:ayush_hospitals/view/about/AboutUsPage.dart';
 
-import 'pages/loginPage.dart';
 
-Future<void> main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool? login = prefs.getBool("login");
-
-  runApp(MaterialApp(
-    routes: Routes.route,
-    restorationScopeId: "id",
-    title: 'Ayush Hospitals',
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primaryColor: Colors.black,
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyBiax1i5DfEWHi9t4SuL7fyZb3mYVSMDQM",
+      appId: "1:1071004870603:android:03e1472cb3b7b02f26b84e",
+      messagingSenderId: "1071004870603",
+      projectId: "ayush-hospitals-e0a65",
+      databaseURL: "https://ayush-hospitals-e0a65-default-rtdb.asia-southeast1.firebasedatabase.app",
     ),
-    home: login == null
-        ? const LoginPage()
-        : const MyHomePage(title: 'Ayushman Hospitals'),
-  ));
+  );
+  runApp(const MyApp());
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-class _MyHomePageState extends State<MyHomePage> {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      drawer: const MyDrawer(),
-      appBar: AppBar(
-        title: const Text("Ayushman Hospitals",
-            style: TextStyle(
-              fontStyle: FontStyle.italic,
-            )),
-        elevation: 0,
-        backgroundColor: Colors.teal,
-        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 25),
+    return MaterialApp(
+      title: 'Holistic Heal',
+      routes: {
+        '/': (context) => const SplashScreen(
+              // child: const CustomizedBottomNavigationbar(),
+              child: const AboutUsScreen(),
+            ),
+      },
+      theme: ThemeData(
+        
+        primarySwatch: Colors.blue,
       ),
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [TopInfo(), GridViewItems()]),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:ayush_hospitals/utils/color_utils.dart';
 
 class MarkerDetailsPage extends StatelessWidget {
   final String title;
-  static var db = Mysql(db: 'sql6704601');
+  static var db = Mysql(db: 'sql6688600');
 
   MarkerDetailsPage({required this.title});
 

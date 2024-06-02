@@ -1,9 +1,10 @@
 import 'package:ayush_hospitals/connections/database.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mysql_client/mysql_client.dart';
+import 'package:mysql1/mysql1.dart';
 
 class SortedMarkers {
-  static var db = Mysql(db: 'ayush_hospitals');
+  static var db = Mysql(db: 'sql6688600');
 
   static Future<List<List<dynamic>>> getSortedMarkers(
       String state, String district, String type) async {
@@ -11,25 +12,17 @@ class SortedMarkers {
 
     var conn = await db.getConnection();
     String query =
-        "select Latitude,Longitude,Hospital_Id,Hospital_Name from ayush_hospitals.hospital_details where State='$state' && District='$district' && Hospital_Type='$type'";
+        "select Latitude,Longitude,Hospital_Id,Hospital_Name from sql6688600.ayush where State='$state' && District='$district' && Hospital_Type='$type'";
 
-    // var result = await conn.query(query);
-    IResultSet result = await conn.execute(query);
+    var result = await conn.query(query);
 
-    for (final val in result.rows) {
-      // res.add([
-      //   LatLng(double.parse(val[0].toString().replaceAll(RegExp('°'), '')),
-      //       double.parse(val[1].replaceAll(RegExp('°'), ''))),
-      //   val[2],
-      //   val[3]
-      // ]);
-
+    for (final row in result) {
       res.add([
         LatLng(
-            double.parse(val.colAt(0)!.toString().replaceAll(RegExp('°'), '')),
-            double.parse(val.colAt(1)!.toString().replaceAll(RegExp('°'), ''))),
-        val.colAt(2),
-        val.colAt(3)
+            double.parse(row[0].toString().replaceAll(RegExp('°'), '')),
+            double.parse(row[1].toString().replaceAll(RegExp('°'), ''))),
+        row[2],
+        row[3]
       ]);
     }
     await conn.close();
